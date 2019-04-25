@@ -9,24 +9,21 @@ use std::collections::HashMap;
 
 impl Solution {
   pub fn length_of_longest_substring(s: String) -> i32 {
-    let mut left_pos :i32 = -1;
-    let mut max_left :i32 = -1;
-    let mut max_right :i32 = -1;
+    let mut left_pos = 0;
+    let mut max_len = 0;
     let mut hash = HashMap::new();
+
     for (i, c) in s.chars().enumerate() {
-      let i = i as i32;
-      if hash.contains_key(&c) && *hash.get(&c).unwrap() > left_pos {
-        left_pos = *hash.get(&c).unwrap();
-        hash.insert(c, i);
+      if hash.contains_key(&c) && hash[&c] >= left_pos {
+        left_pos = hash[&c] + 1;
       } else {
-        hash.insert(c, i);
-        if i - left_pos > max_right - max_left {
-          max_left = left_pos;
-          max_right = i;
+        if i - left_pos + 1 > max_len {
+          max_len = i - left_pos + 1
         }
       }
+      hash.insert(c, i);
     }
-    max_right - max_left
+    max_len as i32
   }
 }
 
