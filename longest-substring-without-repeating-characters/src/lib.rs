@@ -1,8 +1,8 @@
 struct Solution;
 
 /////////////////////////////////////////////////////////////////
-// Runtime: 4 ms, faster than 88.93% of Rust submissions.      //
-// Memory Usage: 2.6 MB, less than 81.25% of Rust submissions. //
+// Runtime: 4 ms, faster than 89.04% of Rust submissions.      //
+// Memory Usage: 2.5 MB, less than 93.75% of Rust submissions. //
 /////////////////////////////////////////////////////////////////
 
 use std::collections::HashMap;
@@ -14,13 +14,16 @@ impl Solution {
     let mut hash = HashMap::new();
 
     for (i, c) in s.chars().enumerate() {
-      if hash.contains_key(&c) && hash[&c] >= left_pos {
-        left_pos = hash[&c] + 1;
-      } else {
-        if i - left_pos + 1 > max_len {
-          max_len = i - left_pos + 1
+      if let Some(&last_index) = hash.get(&c) {
+        if last_index >= left_pos {
+          left_pos = last_index + 1;
         }
+      };
+
+      if i - left_pos + 1 > max_len {
+        max_len = i - left_pos + 1;
       }
+
       hash.insert(c, i);
     }
     max_len as i32
